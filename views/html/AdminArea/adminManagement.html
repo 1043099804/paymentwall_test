@@ -1,0 +1,139 @@
+<div class="admin-index-child">
+
+	<div>
+		<table>   
+		    <tr>
+	           <th>管理员姓名</th>
+	           <th>管理员邮箱</th>
+	           <th>管理员手机</th>
+	           <th>所负责商户</th>
+	        </tr>
+
+	        <tr ng-repeat = "one in all_admins">
+	            <td ng-bind="one.admin.name"></td>
+	            <td ng-bind="one.admin.email"></td>
+	            <td ng-bind="one.admin.mobile"></td>
+	            <td><button class="button" ng-click="checkAdminMerchantList(one.admin.name)">查看</button></td>
+	            <td><button class="button" ng-click="changeAdminProfile(one.admin.name)">修改</button></td>
+	            <td><button class="button" ng-click="deleteAdminProfile(one.admin.name)">删除</button></td>
+	        </tr>
+        </table>
+	</div>
+
+	<div class="message-box" ng-if="delete_admin_confirmation_show">
+		确认删除{{delete_admin_name}}？
+		<button ng-click="deleteAdminProfileConfirm()">删除</button>
+		<button ng-click="deleteAdminProfileCancel()">取消</button>
+	</div>
+
+	<button ng-click = "add_admin_show=true" class="add-admin">添加管理员</button>
+	<div ng-if="add_admin_show" class="form-actions">
+
+		<form name="addAdminForm" role="form" ng-submit="addNewAdmin()" novalidate>
+			<div>
+				<div class="inp-flag">
+					<label>姓名：</label>
+				</div>
+				<input name="name" class="form-control" type="text" ng-model="new_admin.name" required >
+				<p class="help-block" ng-show="addAdminForm.name.$error.required && !addAdminForm.name.$pristine">该项必填</p>
+				<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="addAdminForm.name.$valid"></span>
+				<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="addAdminForm.name.$invalid && !addAdminForm.name.$pristine"></span>
+			</div>
+
+
+			<div class="form-group has-feedback" ng-class="{ 'has-error' : addAdminForm.email.$invalid && !addAdminForm.email.$pristine,
+			'has-success' : addAdminForm.email.$valid }">
+				<div class="inp-flag">
+					<label>邮箱地址：</label>
+				</div>
+				<input name="email" class="form-control" type="email" ng-model="new_admin.email" required>
+				<p class="help-block" ng-show="addAdminForm.email.$error.required && !addAdminForm.email.$pristine">该项必填</p>
+				<p class="help-block" ng-show="addAdminForm.email.$error.email && !addAdminForm.email.$pristine">不符合email格式</p>
+				<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="addAdminForm.email.$valid"></span>
+				<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="addAdminForm.email.$invalid && !addAdminForm.email.$pristine"></span>
+			</div>
+
+			<div class="form-group has-feedback" ng-class="{ 'has-error' : addAdminForm.mobile.$invalid && !addAdminForm.mobile.$pristine,
+			'has-success' : addAdminForm.mobile.$valid }">
+				<div class="inp-flag">
+					<label>手机号码：</label>
+				</div>
+				<input name="mobile" class="form-control" type="mobile" ng-model="new_admin.mobile" required>
+				<p class="help-block" ng-show="addAdminForm.mobile.$error.required && !addAdminForm.mobile.$pristine">该项必填</p>
+				<p class="help-block" ng-show="addAdminForm.mobile.$error.mobile && !addAdminForm.mobile.$pristine">不符合mobile格式</p>
+				<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="addAdminForm.mobile.$valid"></span>
+				<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="addAdminForm.mobile.$invalid && !addAdminForm.mobile.$pristine"></span>
+			</div>
+
+
+			<div class="form-group has-feedback" ng-class="{ 'has-error' : addAdminForm.password.$invalid && !addAdminForm.password.$pristine,
+			'has-success' : same_password }">
+				<div class="inp-flag">
+					<label>设置密码：</label>
+				</div>
+				<input class="form-control" name="password" type="password" ng-model="new_admin.password" ng-minlength=6 required>
+				<p class="help-block" ng-show="addAdminForm.password.$error.required && !addAdminForm.password.$pristine">该项必填</p>		
+				<p class="help-block" ng-show="addAdminForm.password.$error.minlength && !addAdminForm.password.$pristine">密码最小长度为6</p>		
+				<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="addAdminForm.password.$valid && same_password"></span>
+				<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="addAdminForm.password.$invalid && !addAdminForm.password.$pristine"></span>
+			</div>
+
+			<div class="form-group has-feedback" ng-class="{ 'has-error' : (addAdminForm.password_confirmation.$invalid || !same_password) && !addAdminForm.password_confirmation.$pristine,
+			'has-success' : same_password }">
+				<div class="inp-flag">
+					<label>再次输入密码：</label>
+				</div>
+				<input class="form-control" name="password_confirmation" type="password" ng-model="new_admin.password_confirmation" ng-minlength=6 required>
+				<p class="help-block" ng-show="addAdminForm.password_confirmation.$error.required && !addAdminForm.password_confirmation.$pristine">该项必填</p>		
+				<p class="help-block" ng-show="addAdminForm.password_confirmation.$error.minlength && !addAdminForm.password_confirmation.$pristine">密码最小长度为6</p>		
+				<p class="help-block" ng-show="!same_password && !addAdminForm.password_confirmation.$pristine">两次填写密码不一致</p>
+				<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="addAdminForm.password_confirmation.$valid && same_password"></span>
+				<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="addAdminForm.password_confirmation.$invalid && !addAdminForm.password_confirmation.$pristine"></span>
+			</div>
+
+	<!-- 除了ng自带的表单验证外，加上密码验证，才可以注册 -->
+	  		<button type="submit" class="btn btn-primary" ng-disabled="addAdminForm.$invalid || !same_password" >添加</button>
+	  		{{register_result}}
+	  	</form>
+	</div>
+
+	<!--查看Admin负责商户  -->
+	<div ng-if = "admin_merchant_list_show">
+
+		<ol>
+			<li ng-repeat = "merchant in admin_merchant_list">
+				{{merchant}}
+			</li>
+		</ol>
+
+	</div>
+
+	<div ng-if = "admin_profile_change_show" class="form-actions">
+		<div>
+			<div class="inp-flag">
+				<label>新姓名：</label>
+			</div>		
+			<input type="text" ng-model="admin_changing_profile.name" class="form-control">
+		</div>
+		<div>
+			<div class="inp-flag">
+				<label>新邮箱：</label>
+			</div>		
+			<input type="text" ng-model="admin_changing_profile.email" class="form-control">
+		</div>
+		<div>
+			<div class="inp-flag">
+				<label>新手机：</label>
+			</div>	
+			<input type="text" ng-model="admin_changing_profile.mobile">
+		</div>
+		<div>
+			<div class="inp-flag">
+				<label>新密码：</label>
+			</div>	
+			<input type="text" placeholder="新密码" ng-model="admin_changing_profile.new_password">
+		</div>
+		<button ng-click = "changeAdminProfileConfirm()">修改</button>
+		{{admin_change_result}}
+	</div>
+</div>

@@ -1,0 +1,106 @@
+<div class="admin-index-child">
+
+
+	<h1>添加商户</h1>
+		<form name="registerForm" role="form"  novalidate>
+		<div>
+			<div class="inp-flag">
+				<label>公司名称：</label>	
+			</div>
+			<input name="name" class="form-control" type="text" ng-model="merchant.name" required >
+			<p class="help-block" ng-show="registerForm.name.$error.required && !registerForm.name.$pristine">该项必填</p>
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="registerForm.name.$valid"> 对</span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="registerForm.name.$invalid && !registerForm.name.$pristine">x</span>
+		</div>
+
+		<div>
+			<div class="inp-flag">
+				<label>公司所在城市：</label>
+			</div>
+			<select ng-model="merchant.location_city" >
+				<option value = "Beijing">北京</option>
+				<option value = "Shanghai">上海</option>
+				<option value = "Tianjin">天津</option>
+			</select>
+		</div>
+
+		<div>
+			<div class="inp-flag">
+				<label>设置密码：</label>
+			</div>
+			<input class="form-control" name="password" type="password" ng-model="merchant.password" ng-minlength=6 required>
+			<p class="help-block" ng-show="registerForm.password.$error.required && !registerForm.password.$pristine">该项必填</p>		
+			<p class="help-block" ng-show="registerForm.password.$error.minlength && !registerForm.password.$pristine">密码最小长度为6</p>		
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="registerForm.password.$valid && same_password"></span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="registerForm.password.$invalid && !registerForm.password.$pristine"></span>
+		</div>
+
+		<div>
+			<div class="inp-flag">
+				<label>再次输入密码：</label>
+			</div>
+			<input class="form-control" name="password_confirmation" type="password" ng-model="merchant.password_confirmation" ng-minlength=6 required>
+			<p class="help-block" ng-show="registerForm.password_confirmation.$error.required && !registerForm.password_confirmation.$pristine">该项必填</p>		
+			<p class="help-block" ng-show="registerForm.password_confirmation.$error.minlength && !registerForm.password_confirmation.$pristine">密码最小长度为6</p>		
+			<p class="help-block" ng-show="!same_password && !registerForm.password_confirmation.$pristine">两次填写密码不一致</p>
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="registerForm.password_confirmation.$valid && same_password"></span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="registerForm.password_confirmation.$invalid && !registerForm.password_confirmation.$pristine"></span>
+		</div>
+
+		<div>
+			<div class="inp-flag">
+				<label>联系人姓名：</label>
+			</div>
+			<input name="contact_person_name" class="form-control" type="text" ng-model="merchant.contact_person_name" required >
+			<p class="help-block" ng-show="registerForm.contact_person_name.$error.required && !registerForm.contact_person_name.$pristine">该项必填</p>
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="registerForm.contact_person_name.$valid"> 对</span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="registerForm.contact_person_name.$invalid && !registerForm.contact_person_name.$pristine">x</span>
+		</div>
+
+		<div>
+			<div class="inp-flag">
+				<label>联系人邮件：</label>
+			</div>
+			<input name="email" class="form-control" type="email" ng-model="merchant.email" required>
+			<p class="help-block" ng-show="registerForm.email.$error.required && !registerForm.email.$pristine">该项必填</p>
+			<p class="help-block" ng-show="registerForm.email.$error.email && !registerForm.email.$pristine">不符合email格式</p>
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="registerForm.email.$valid">对</span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="registerForm.email.$invalid && !registerForm.email.$pristine">x</span>
+		</div>
+
+		<div>
+			<div class="inp-flag">
+				<label>联系人手机号：</label>
+			</div>
+			<input name="mobile" class="form-control" type="text" ng-model="merchant.mobile" required >
+			<p class="help-block" ng-show="registerForm.mobile.$error.required && !registerForm.mobile.$pristine">该项必填</p>
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="registerForm.mobile.$valid"> 对</span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="registerForm.mobile.$invalid && !registerForm.mobile.$pristine">x</span>
+		</div>
+  		<br>
+
+
+		<select ng-model = "merchant.willing_to_cooperate" ng-init = "merchant.willing_to_cooperate=true">
+			<option value = "true">可以合作</option>
+			<option value = "false">不想合作</option>
+		</select>
+		此商户是否可以合作 <br>
+		<select  ng-model = "merchant.follow_up_admin" >
+			<option value = "Nobody">无人跟进</option>
+			<option value = "{{admin.admin.name}}" ng-repeat = "admin in all_admins" ng-bind = "admin.admin.name"></option>
+		</select>
+		由谁负责跟进 <br>
+		<select  ng-model = "merchant.hierarchy" ng-init = "merchant.hierarchy=2">
+			<option value = 1>VIP商户</option>
+			<option value = 2>普通</option>
+			<option value = 3>不重要</option>
+		</select>商户重要性 <br>
+
+		<br>
+
+		<!-- 除了ng自带的表单验证外，加上密码验证，才可以注册 -->
+		<button ng-click ="merchantRegister()" class="btn btn-primary" ng-disabled="registerForm.$invalid || !same_password" >确定添加商户</button>
+		  		{{register_result}}
+		</form>
+
+</div>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html ng-app="adminIndexApp">
+<head>
+	<meta charset="utf-8">
+
+	<!-- The import of the javascript -->
+	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/bower_components/angular-resource/angular-resource.min.js"></script>
+	<script src="/bower_components/angular-route/angular-route.min.js"></script>
+	<script src="/bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+	<script src="/bower_components/angular-md5/angular-md5.js"></script>
+	<script src="/bower_components/ng-img-crop/compile/minified/ng-img-crop.js"></script>
+	<script src="/js/AdminArea/adminIndex.js"></script>
+   
+   	<link rel="stylesheet" href="/bower_components/ng-img-crop/compile/minified/ng-img-crop.css">
+    <link rel="stylesheet" href="../css/AdminArea/index.css">
+    <link rel="stylesheet" href="../css/gh-buttons.css">
+</head>	
+
+
+
+<body ng-controller="adminIndexController">
+
+	<div class="merchant-form">
+		<nav >
+			<ul>
+				<li ng-mouseover="navChildOptionsShow('members')" ng-mouseleave="navChildOptionsHide()">
+				<!-- 抵岸 -->功能
+					<ul class="drop-down-list-ul" ng-if="nav_child.members">
+						<li class="drop-down-list-li">
+							<a class="button big" href="#/admin/members/list">成员名单</a>
+						</li>
+						<li class="drop-down-list-li" ng-if = "show_admin_control">
+							<a class="button big" href="#/admin/members/management">成员管理</a>
+						</li>
+						<li class="drop-down-list-li" ng-if = "show_admin_control">
+							<a class="button big" ng-click = "websiteProfileReset()">网站初始化</a>
+						</li>
+					</ul>
+				</li>
+				<li ng-mouseover="navChildOptionsShow('merchants')" ng-mouseleave="navChildOptionsHide()">
+				商户管理
+					<ul class="drop-down-list-ul" ng-if="nav_child.merchants">
+						<li class="drop-down-list-li">
+							<a class="button big" href="#/merchant/add">添加商户</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="#/merchant/list">商户列表</a>
+						</li>
+					</ul>
+				</li>
+				<li ng-mouseover="navChildOptionsShow('users')" ng-mouseleave="navChildOptionsHide()">
+				用户管理
+					<ul class="drop-down-list-ul" ng-if="nav_child.users">
+						<li class="drop-down-list-li">
+							<a class="button big" href="/users/finding">查找用户</a>
+						</li>
+					</ul>
+				</li>
+				<li ng-mouseover="navChildOptionsShow('transactions')" ng-mouseleave="navChildOptionsHide()">
+				报告管理
+					<ul class="drop-down-list-ul" ng-if="nav_child.transactions">
+						<li class="drop-down-list-li">
+							<a class="button big" href="#/admin/task/list">订单报告</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/management">商户统计报告</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/management">用户统计报告</a>
+						</li>
+					</ul>
+				</li>
+
+				<li ng-mouseover="navChildOptionsShow('tasks')" ng-mouseleave="navChildOptionsHide()">
+				任务管理
+					<ul class="drop-down-list-ul" ng-if="nav_child.tasks">
+						<li class="drop-down-list-li">
+							<a class="button big" href="#/task/list">全部任务</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="#/">我的任务</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="#/task/create">创建任务</a>
+						</li>
+					</ul>
+				</li>
+
+
+			</ul>
+
+			<div ng-mouseover="navChildOptionsShow('admin')" ng-mouseleave="navChildOptionsHide()" >			
+				<a href="#/"><img class="logo" ng-src="/storage/Admin/logo.jpg"></a>
+				<ul class="admin-drop-down-list-ul" ng-mouseover="navChildOptionsShow('admin')" ng-mouseleave="navChildOptionsHide()" ng-if="nav_child.admin">
+					<li class="admin-drop-down-list-li-first">
+						<a class="button big" href="#/admin/profile">个人资料</a>
+					</li>
+					<li class="admin-drop-down-list-li-second">
+						<a class="button big" href="/admin/log/out">登出</a>
+					</li>
+				</ul>
+			</div>
+
+		</nav>
+
+
+
+	</div>
+
+<div ng-view></div>
+
+
+</body>
+</html>

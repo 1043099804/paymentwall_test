@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="adminLoginApp">
+<head>
+	<meta charset="utf-8">
+
+	<!-- The import of the javascript -->
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/bower_components/angular-resource/angular-resource.min.js"></script>
+	<script src="/bower_components/angular-route/angular-route.min.js"></script>
+	<script src="/bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+	<script src="/bower_components/angular-md5/angular-md5.js"></script>	
+	<script src="/js/AdminArea/adminLogin.js"></script>
+
+</head>	
+
+<body ng-controller="adminLoginController">
+
+	<div ng-if="admin_page">
+		<input ng-model="admin.name">用户名<br/>
+		<input ng-model="admin.password">密码<br/>
+		<button ng-click="login()">登陆</button>	
+		{{admin.message}}	
+	</div>
+
+	<div ng-if="fail_page">
+		 密码错误，无权查看		
+	</div>
+
+</body>
+
+</html>

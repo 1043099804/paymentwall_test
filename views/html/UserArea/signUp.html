@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app="SignUpApp">
+<head>
+
+	<!-- The information of the website and the valid scale factor -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/signup-form.css">
+	
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/bower_components/angular-resource/angular-resource.min.js"></script>
+	<script src="/bower_components/angular-route/angular-route.min.js"></script>
+	<script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script src="/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+	<script src="/bower_components/angular-strap/dist/modules/modal.min.js"></script>
+	<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/bower_components/angular-md5/angular-md5.js"></script>
+	<script src="/js/UserArea/signup.js"></script>
+
+</head>	
+
+<body ng-controller="SignUpController">
+
+<div class="login-wrap">
+
+  <div  class="login-form" >
+		<h1>用户注册</h1>
+		<form name="loginForm" role="form" ng-submit="register()" novalidate>
+			
+		<div class="form-group has-feedback" ng-class="{ 'has-error' : loginForm.name.$invalid && !loginForm.name.$pristine, 
+		'has-success' : loginForm.name.$valid }">
+			<label>昵称：</label>
+			<input name="name" class="form-control" type="text" ng-model="person.name" ng-maxlength=9 ng-minlength=2 required >
+			<p class="help-block" ng-show="loginForm.name.$error.required && !loginForm.name.$pristine">该项必填</p>
+			<p class="help-block" ng-show="loginForm.name.$error.minlength && !loginForm.name.$pristine">昵称最少为两个字</p>
+			<p class="help-block" ng-show="loginForm.name.$error.maxlength && !loginForm.name.$pristine">昵称最多为九个字</p>
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="loginForm.name.$valid"></span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="loginForm.name.$invalid && !loginForm.name.$pristine"></span>
+		</div>
+
+
+		<div class="form-group has-feedback" ng-class="{ 'has-error' : loginForm.email.$invalid && !loginForm.email.$pristine,
+		'has-success' : loginForm.email.$valid }">
+			<label>邮箱地址：</label>
+			<input name="email" class="form-control" type="email" ng-model="person.email" required>
+			<p class="help-block" ng-show="loginForm.email.$error.required && !loginForm.email.$pristine">该项必填</p>
+			<p class="help-block" ng-show="loginForm.email.$error.email && !loginForm.email.$pristine">不符合email格式</p>
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="loginForm.email.$valid"></span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="loginForm.email.$invalid && !loginForm.email.$pristine"></span>
+		</div>
+
+
+		<div class="form-group has-feedback" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine,
+		'has-success' : same_password }">
+			<label>设置密码：</label>
+			<input class="form-control" name="password" type="password" ng-model="person.password" ng-minlength=6 required>
+			<p class="help-block" ng-show="loginForm.password.$error.required && !loginForm.password.$pristine">该项必填</p>		
+			<p class="help-block" ng-show="loginForm.password.$error.minlength && !loginForm.password.$pristine">密码最小长度为6</p>		
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="loginForm.password.$valid && same_password"></span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="loginForm.password.$invalid && !loginForm.password.$pristine"></span>
+		</div>
+
+		<div class="form-group has-feedback" ng-class="{ 'has-error' : (loginForm.password_confirmation.$invalid || !same_password) && !loginForm.password_confirmation.$pristine,
+		'has-success' : same_password }">
+			<label>再次输入密码：</label>
+			<input class="form-control" name="password_confirmation" type="password" ng-model="person.password_confirmation" ng-minlength=6 required>
+			<p class="help-block" ng-show="loginForm.password_confirmation.$error.required && !loginForm.password_confirmation.$pristine">该项必填</p>		
+			<p class="help-block" ng-show="loginForm.password_confirmation.$error.minlength && !loginForm.password_confirmation.$pristine">密码最小长度为6</p>		
+			<p class="help-block" ng-show="!same_password && !loginForm.password_confirmation.$pristine">两次填写密码不一致</p>
+			<span class="glyphicon glyphicon-ok form-control-feedback" ng-show="loginForm.password_confirmation.$valid && same_password"></span>
+			<span class="glyphicon glyphicon-remove form-control-feedback" ng-show="loginForm.password_confirmation.$invalid && !loginForm.password_confirmation.$pristine"></span>
+		</div>
+
+		<div>
+			<input name="personCheck" type="checkbox" ng-model="person.regulation" value="true" required>  是否同意用户守则
+			<button ng-click="$parent.show_regulation=true" >用户守则</button>
+		</div>
+  		<br>
+<!-- 除了ng自带的表单验证外，加上密码验证，才可以注册 -->
+  		<button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid || !same_password" >注册</button>
+  		{{register_result}}
+	  	</form>
+
+
+   </div>
+   <div ng-show="show_regulation">
+   	<button ng-click="show_regulation=false">关闭</button>
+   	用户守则   	
+   </div>
+
+  
+</div>
+
+
+  		<!-- <input type="text" ng-model="verify_code"> -->
+</body>
+</html>
+

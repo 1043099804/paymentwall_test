@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<!-- The import of the javascript -->
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/bower_components/angular-resource/angular-resource.min.js"></script>
+	<script src="/bower_components/angular-route/angular-route.min.js"></script>
+	<script src="/bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+	<script src="/js/AdminArea/merchantProfileController.js"></script>
+   
+    <link rel="stylesheet" href="../css/AdminArea/index.css">
+    <link rel="stylesheet" href="../css/gh-buttons.css">
+</head>	
+
+
+
+<body ng-app="MerchantProfileAdminApp">
+
+	<div  ng-controller="MerchantProfileController" class="merchant-form">
+		<nav >
+			
+			<img ng-src="/storage/public/logo.jpg">
+
+			<ul>
+				<li ng-mouseover="navChildOptionsShow('members')" ng-mouseleave="navChildOptionsHide()">
+				抵岸成员
+					<ul class="drop-down-list-ul" ng-if="nav_child.members">
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/list">成员名单</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/management">成员管理</a>
+						</li>
+					</ul>
+				</li>
+				<li ng-mouseover="navChildOptionsShow('merchants')" ng-mouseleave="navChildOptionsHide()">
+				商户管理
+					<ul class="drop-down-list-ul" ng-if="nav_child.merchants">
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/list">添加商户</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/management">查找商户</a>
+						</li>
+					</ul>
+				</li>
+				<li ng-mouseover="navChildOptionsShow('users')" ng-mouseleave="navChildOptionsHide()">
+				用户管理
+					<ul class="drop-down-list-ul" ng-if="nav_child.users">
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/list">查找用户</a>
+						</li>
+					</ul>
+				</li>
+				<li ng-mouseover="navChildOptionsShow('transactions')" ng-mouseleave="navChildOptionsHide()">
+				报告管理
+					<ul class="drop-down-list-ul" ng-if="nav_child.transactions">
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/list">订单报告</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/management">商户统计报告</a>
+						</li>
+						<li class="drop-down-list-li">
+							<a class="button big" href="/admin/members/management">用户统计报告</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+			<img ng-src="/storage/Admin/{{admin_name}}/avatar.jpeg" style="position:fixed; width:100px;height:100px;border-radius:100px;     padding-right: 0px; right:30px">
+		</nav>
+
+		<button class="button" ng-click="showAddAdminArea()">添加管理员</button>
+		<button ng-click="showAddMerchantArea()">添加商户</button>
+		<button ng-click="showFindArea()">查找商户</button>
+		<button ng-click="addedNewWebsite()">添加网站</button>
+
+
+
+		
+		<div ng-if = "new_merchant">
+			<input type="text" ng-model = "merchant.name" />商户名称
+			<input type="text" ng-model = "merchant.email" />商户邮箱
+			<input type="text" ng-model = "merchant.contact_person" />联系人姓名
+			<input type="text" ng-model = "merchant.website" />商户官网
+			<input type="text" ng-model = "merchant.location" />商户公司地址
+			<input type="text" ng-model = "merchant.score.pass_rate" />申请通过率
+			<input type="text" ng-model = "merchant.score.article_score" />文书评分
+			<input type="text" ng-model = "merchant.score.total_score" />综合评分
+			<br>
+			
+			<button ng-click = "addedNewArea()">增加一个地区</button>
+			<div ng-repeat = "area in merchant.support_area">
+				<input type="text" ng-model = "merchant.support_area[$index]" />
+			</div><br>
+			
+			<button ng-click="addNewMerchant()">确定添加商户</button><br>
+		</div>
+
+		<div ng-if = "find_merchant">
+				<input type="text" ng-model = "finded_merchant.merchant_name" />商户名称
+				<input type="text" ng-model = "finded_merchant.email" />商户邮箱
+
+				<button ng-click = "findMerchant()">搜索</button>
+
+				<!-- 例子  -->
+				{{finded_merchant.merchant_id}} 商户id
+				{{finded_merchant.contact_person_name}}联系人姓名 
+				{{finded_merchant.website}}商户官网
+				{{finded_merchant.location}}商户公司地址
+				{{finded_merchant.score.pass_rate}}申请通过率
+				{{finded_merchant.score.article_score}}文书评分
+				{{finded_merchant.score.total_score}}综合评分
+		</div>
+		<div ng-if = "showProfile">
+			<div ng-repeat = "file in merchant.identification" >
+				<label>{{file.name}}: </label>
+
+				<div nv-file-drop="" uploader="uploader" options="{ url: '{{file.url}}'}">
+				    拖动上传文件到这里
+				</div>
+
+				<input type="file" nv-file-select="" uploader="uploader" options="{ url: '{{file.url}}'}">	
+				
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
