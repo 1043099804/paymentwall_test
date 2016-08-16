@@ -12,6 +12,14 @@ var MerchantProfile = require('./controller/MerchantProfile.js');
 var UserProfile = require('./controller/UserProfile.js');
 var ResetWebsiteProfile = require('./controller/ResetWebsiteProfile.js');
 
+var Paymentwall = require('paymentwall');
+
+Paymentwall.configure(
+  Paymentwall.Base.API_GOODS,
+  'YOUR_APPLICATION_KEY',
+  'YOUR_SECRET_KEY'
+);
+
 
 var Test = require('./controller/Test.js');
 
@@ -22,13 +30,23 @@ module.exports = function(app) {
 	app.all("/admin", Enter.authenticateAdmin, Enter.adminPageEnter);
 
 	app.all("/paymentwall/pingback", function(req,res){
-		console.log('x-forwarded-for:'+req.headers['x-forwarded-for']+"\n");
-		console.log('x-real-ip:'+req.headers['x-real-ip']+"\n");
-		console.log('req.connection.remoteAddress:'+req.connection.remoteAddress+"\n");
+
 		const ip = (req.headers['x-forwarded-for']
 		    || req.headers['x-real-ip']
 		    || req.connection.remoteAddress).replace('::ffff:', '');
-		res.send("OK");
+
+		var pingback = new Paymentwall.Pingback(queryData, ipAddress);
+		if (pingback.validate(false)) {
+		  var productId = pingback.getProduct().getId();
+		  if (pingback.isDeliverable()) {
+		    // deliver the product
+		  } else if (pingback.isCancelable()) {
+		    // withdraw the product
+		  } 
+		  console.log('OK'); // Paymentwall expects the string OK in response, otherwise the pingback will be resent
+		} else {
+		  console.log(pingback.getErrorSummary());
+		}
 	})
     //Admin Area
     app.get("/admin", Enter.authenticateAdmin, Enter.getAllAccess);
