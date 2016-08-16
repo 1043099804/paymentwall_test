@@ -22,7 +22,12 @@ module.exports = function(app) {
 	app.all("/admin", Enter.authenticateAdmin, Enter.adminPageEnter);
 
 	app.all("/paymentwall/pingback", function(req,res){
-		console.log("success");
+		console.log('x-forwarded-for:'+req.headers['x-forwarded-for']+"\n");
+		console.log('x-real-ip:'+req.headers['x-real-ip']+"\n");
+		console.log('req.connection.remoteAddress:'+req.connection.remoteAddress+"\n");
+		const ip = (req.headers['x-forwarded-for']
+		    || req.headers['x-real-ip']
+		    || req.connection.remoteAddress).replace('::ffff:', '');
 		res.send("OK");
 	})
     //Admin Area
